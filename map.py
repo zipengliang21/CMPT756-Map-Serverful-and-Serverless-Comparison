@@ -20,7 +20,7 @@ class Edge:
         self.weight = math.sqrt((start_node.x - end_node.x) ** 2 + (start_node.y - end_node.y) ** 2)
 
     def __lt__(self, other):
-        return self.weight < other.weight
+        return self.weight < other.weight-
 
 
 class Graph:

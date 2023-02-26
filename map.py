@@ -1,7 +1,7 @@
 import math
 import random
 import matplotlib.pyplot as plt
-
+import sys
 
 class Node:
     def __init__(self, node_id, x, y):
@@ -20,7 +20,7 @@ class Edge:
         self.weight = math.sqrt((start_node.x - end_node.x) ** 2 + (start_node.y - end_node.y) ** 2)
 
     def __lt__(self, other):
-        return self.weight < other.weight-
+        return self.weight < other.weight
 
 
 class Graph:
@@ -33,6 +33,12 @@ class Graph:
 
     def add_edge(self, edge):
         self.edges.append(edge)
+
+    def get_node_by_id(self, node_id):
+        for node in self.nodes:
+            if node.node_id == node_id:
+                return node
+        return None   
 
     def get_minimal_spanning_tree(self):
         self.edges.sort()
@@ -115,6 +121,21 @@ class Graph:
             ax.plot([start_node.x, end_node.x], [start_node.y, end_node.y], "r-")
         plt.show()
 
+    def navigationQuery(self, start_node_id, end_node_id):
+        minimal_spanning_tree = self.get_minimal_spanning_tree()
+        shortest_path = minimal_spanning_tree.find_shortest_path(self.get_node_by_id(start_node_id), self.get_node_by_id(end_node_id))
+        if shortest_path:
+            return [node.node_id for node in shortest_path]
+        else:
+            return None
+        
+    def updateNode(self, node_id):
+        node = self.get_node_by_id(node_id)
+        if node is not None:
+            r = 100 * math.sqrt(random.uniform(0, 1))
+            x = r * math.cos(random.uniform(0, 2 * math.pi))
+            y = r * math.sin(random.uniform(0, 2 * math.pi))
+
 
 if __name__ == "__main__":
     num_nodes = 100
@@ -123,6 +144,7 @@ if __name__ == "__main__":
         r = 100 * math.sqrt(random.uniform(0, 1))
         x = r * math.cos(random.uniform(0, 2 * math.pi))
         y = r * math.sin(random.uniform(0, 2 * math.pi))
+
         node = Node(node_id, x, y)
         graph.add_node(node)
 
@@ -132,13 +154,25 @@ if __name__ == "__main__":
             graph.add_edge(edge)
 
     minimal_spanning_tree = graph.get_minimal_spanning_tree()
-    shortest_path = minimal_spanning_tree.find_shortest_path(minimal_spanning_tree.nodes[0], minimal_spanning_tree.nodes[-1])
+
+    if len(sys.argv) == 1:
+        start_node = minimal_spanning_tree.nodes[0]
+        end_node = minimal_spanning_tree.nodes[-1]
+    elif len(sys.argv) == 2:
+        raise ValueError("Error: Please provide two node IDs.")
+    elif len(sys.argv) == 3:
+        start_node_id = int(sys.argv[1])
+        end_node_id = int(sys.argv[2])
+        start_node = graph.get_node_by_id(start_node_id)
+        end_node = graph.get_node_by_id(end_node_id)
+
+    shortest_path = minimal_spanning_tree.find_shortest_path(start_node, end_node)
     print(f"Shortest path: {[node.node_id for node in shortest_path]}")
 
     # Visualize the minimal spanning tree and shortest path
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.set_aspect("equal")
-    ax.set_title("Minimal Spanning Tree and the Shortest Path")
+    ax.set_title("Minimal Spanning Tree and Shortest Path")
 
     for node in graph.nodes:
         ax.plot(node.x, node.y, "bo")
@@ -155,10 +189,9 @@ if __name__ == "__main__":
         ax.plot([start_node.x, end_node.x], [start_node.y, end_node.y], "g-", linewidth=2)
 
     path_str = " -> ".join([str(node.node_id) for node in shortest_path])
-    ax.text(0, -130, f"Shortest path between {minimal_spanning_tree.nodes[0]} and {minimal_spanning_tree.nodes[-1]}:\n {path_str}", fontsize=12, horizontalalignment="center")
+    ax.text(0, -130, f"Shortest path: {path_str}", fontsize=12, horizontalalignment="center")
 
     plt.show()
-
 
 
 

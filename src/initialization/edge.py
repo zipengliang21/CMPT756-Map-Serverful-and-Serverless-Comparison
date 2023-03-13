@@ -8,7 +8,7 @@ from src.initialization.node import EuclideanDistance
 
 
 class UndirectedEdge:
-    """_summary_
+    """Represents an undirected graph edge.
     """
 
     def __init__(self,

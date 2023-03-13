@@ -87,8 +87,8 @@ def Mst(nodes: List[Node],
 
 def GenerateRandomEdges(nodes: List[Node],
                         out_degree: int) -> List[UndirectedEdge]:
-    """It generates a random graph by connecting each node to out_degree
-    number of other nodes.
+    """It generates a pseudo-random graph by connecting each node to out_degree
+    number of other nodes. Note, this function is idempotent.
 
     Args:
         nodes (List[Node]): The list of nodes that are in the graph.
@@ -117,8 +117,9 @@ def GenerateRandomEdges(nodes: List[Node],
 
 
 def GenerateMstEdges(nodes: List[Node]) -> List[UndirectedEdge]:
-    """It generates a random graph by initially sparsely connecting the nodes,
-    then it finds the minimum spanning tree from the graph.
+    """It generates a pseudo-random graph by initially sparsely connecting the
+    nodes, then it finds the minimum spanning tree from the graph. Note, this
+    function is idempotent.
 
     Args:
         nodes (List[Node]): The list of nodes that are in the graph.

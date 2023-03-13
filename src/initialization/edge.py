@@ -8,7 +8,7 @@ from src.initialization.node import EuclideanDistance
 
 
 class UndirectedEdge:
-    """Represents an undirected graph edge.
+    """Represents an undirected edge in a graph.
     """
 
     def __init__(self,
@@ -26,7 +26,7 @@ class UndirectedEdge:
             f"{self.euclidean_distance}]"
 
 
-def _SelectTargets(nodes: List[Node], num_targets: int) -> Set[int]:
+def _SelectRandomTargets(nodes: List[Node], num_targets: int) -> Set[int]:
     assert len(nodes) >= num_targets
 
     targets = set()
@@ -36,37 +36,6 @@ def _SelectTargets(nodes: List[Node], num_targets: int) -> Set[int]:
         targets.add(target[0])
 
     return targets
-
-
-def GenerateRandomEdges(nodes: List[Node],
-                        out_degree: int) -> List[UndirectedEdge]:
-    """It generates a random graph by connecting each node to out_degree
-    number of other nodes.
-
-    Args:
-        nodes (List[Node]): The list of nodes that are in the graph.
-        out_degree (int): How many nodes to connect against for every node.
-
-    Returns:
-        List[UndirectedEdge]: The generated list of undirected edges in the
-            graph.
-    """
-    assert len(nodes) > out_degree
-    nodes = nodes.copy()
-    np.random.seed(seed=13)
-
-    result_edges = list()
-    while len(nodes) > out_degree:
-        source_node = nodes.pop()
-
-        targets = _SelectTargets(nodes=nodes, num_targets=out_degree)
-        for target in targets:
-            target_node = nodes[target]
-            edge = UndirectedEdge(node_a=source_node, node_b=target_node)
-
-            result_edges.append(edge)
-
-    return result_edges
 
 
 class _GraphComponents:
@@ -95,6 +64,8 @@ class _GraphComponents:
 
 def Mst(nodes: List[Node],
         edges: List[UndirectedEdge]) -> List[UndirectedEdge]:
+    """Internal function exposed for testing purposes.
+    """
     result_edges = list()
     result_components = _GraphComponents(nodes=nodes)
 
@@ -110,6 +81,37 @@ def Mst(nodes: List[Node],
 
         result_edges.append(candid_edge)
         result_components.Connect(component_a, component_b)
+
+    return result_edges
+
+
+def GenerateRandomEdges(nodes: List[Node],
+                        out_degree: int) -> List[UndirectedEdge]:
+    """It generates a random graph by connecting each node to out_degree
+    number of other nodes.
+
+    Args:
+        nodes (List[Node]): The list of nodes that are in the graph.
+        out_degree (int): How many nodes to connect against for every node.
+
+    Returns:
+        List[UndirectedEdge]: The generated list of undirected edges in the
+            graph.
+    """
+    assert len(nodes) > out_degree
+    nodes = nodes.copy()
+    np.random.seed(seed=13)
+
+    result_edges = list()
+    while len(nodes) > out_degree:
+        source_node = nodes.pop()
+
+        targets = _SelectRandomTargets(nodes=nodes, num_targets=out_degree)
+        for target in targets:
+            target_node = nodes[target]
+            edge = UndirectedEdge(node_a=source_node, node_b=target_node)
+
+            result_edges.append(edge)
 
     return result_edges
 

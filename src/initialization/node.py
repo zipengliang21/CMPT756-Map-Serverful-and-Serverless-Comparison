@@ -14,8 +14,14 @@ class Location:
             x (float): _description_
             y (float): _description_
         """
+        assert x is not None
+        assert y is not None
+
         self.x = x
         self.y = y
+
+    def __repr__(self):
+        return f"Location[{self.x},{self.y}]"
 
 
 class Node:
@@ -31,11 +37,14 @@ class Node:
             id (int): Unique identifier in a graph.
             location (Location): a 2D location.
         """
+        assert id is not None
+        assert location is not None
+
         self.id = id
         self.location = location
 
     def __repr__(self):
-        return f"Node {self.id}"
+        return f"Node[{self.id},{self.location}]"
 
 
 def EuclideanDistance(a: Node, b: Node) -> float:

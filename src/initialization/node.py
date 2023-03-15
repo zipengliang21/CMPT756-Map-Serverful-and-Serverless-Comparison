@@ -75,7 +75,7 @@ def GenerateNodes(node_count: int, radius: float) -> List[Node]:
     alpha = np.random.uniform(low=0, high=2*np.pi, size=node_count)
     r = radius*np.sqrt(np.random.uniform(low=0, high=1, size=node_count))
 
-    importance = np.random.normal(loc=0.5, scale=0.5, size=node_count)
+    importance = np.random.exponential(scale=1.0, size=node_count)
     min_imp = np.min(importance)
     max_imp = np.max(importance)
     importance = (importance - min_imp)/(max_imp - min_imp)

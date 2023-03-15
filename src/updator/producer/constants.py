@@ -1,0 +1,1 @@
+MESSAGE_GROUP_GENERAL_MUTATION = "map_mutation"

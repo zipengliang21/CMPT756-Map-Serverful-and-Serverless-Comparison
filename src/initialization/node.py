@@ -30,21 +30,25 @@ class Node:
 
     def __init__(self,
                  id: int,
-                 location: Location):
+                 location: Location,
+                 importance: float):
         """Construct a graph node
 
         Args:
             id (int): Unique identifier in a graph.
-            location (Location): a 2D location.
+            location (Location): A 2D location.
+            importance (float): A score scaling from 0 to 1.
         """
         assert id is not None
         assert location is not None
+        assert importance is not None
 
         self.id = id
         self.location = location
+        self.importance = importance
 
     def __repr__(self):
-        return f"Node[{self.id},{self.location}]"
+        return f"Node[{self.id},{self.location}{self.importance}]"
 
 
 def EuclideanDistance(a: Node, b: Node) -> float:
@@ -71,13 +75,18 @@ def GenerateNodes(node_count: int, radius: float) -> List[Node]:
     alpha = np.random.uniform(low=0, high=2*np.pi, size=node_count)
     r = radius*np.sqrt(np.random.uniform(low=0, high=1, size=node_count))
 
+    importance = np.random.normal(loc=0.5, scale=0.5, size=node_count)
+    min_imp = np.min(importance)
+    max_imp = np.max(importance)
+    importance = (importance - min_imp)/(max_imp - min_imp)
+
     xs = r*np.cos(alpha)
     ys = r*np.sin(alpha)
 
     result = list()
     for i in range(node_count):
         loc = Location(x=xs[i], y=ys[i])
-        node = Node(id=i, location=loc)
+        node = Node(id=i, location=loc, importance=importance[i])
 
         result.append(node)
 

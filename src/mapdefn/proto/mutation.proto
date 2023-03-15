@@ -8,6 +8,7 @@ message Node {
 
   int64 id = 1;
   Location location = 2;
+  float importance = 3;
 }
 
 message WriteUndirectedEdgeRequest {

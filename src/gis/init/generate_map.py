@@ -1,10 +1,10 @@
-from src.initialization.node import Node
-from src.initialization.node import GenerateNodes
-from src.initialization.edge import GenerateMstEdges
-from src.mapdefn.proto_py.mutation_pb2 import Node as ProtoNode
-from src.mapdefn.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
-from src.mapdefn.proto_py.mutation_pb2 import MutationRequest
-from src.mapdefn.proto_py.mutation_pb2 import MutationRequests
+from src.rndgraph.node import Node
+from src.rndgraph.node import GenerateNodes
+from src.rndgraph.edge import GenerateMstEdges
+from src.gis.proto_py.mutation_pb2 import Node as ProtoNode
+from src.gis.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
+from src.gis.proto_py.mutation_pb2 import MutationRequest
+from src.gis.proto_py.mutation_pb2 import MutationRequests
 
 _NODE_SIZE = 100000
 _RADIUS = 100

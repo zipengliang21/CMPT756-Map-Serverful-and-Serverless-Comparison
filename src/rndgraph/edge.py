@@ -1,10 +1,9 @@
-
 import numpy as np
 from typing import List
 from typing import Set
 
-from src.initialization.node import Node
-from src.initialization.node import EuclideanDistance
+from src.rndgraph.node import Node
+from src.rndgraph.node import EuclideanDistance
 
 
 class UndirectedEdge:

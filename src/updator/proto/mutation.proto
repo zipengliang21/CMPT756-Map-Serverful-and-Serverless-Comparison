@@ -27,3 +27,5 @@ message MutationRequest {
     DeleteUndirectedEdgeRequest delete_edge = 2;
   }
 }
+
+message MutationRequests { repeated MutationRequest requests = 1; }

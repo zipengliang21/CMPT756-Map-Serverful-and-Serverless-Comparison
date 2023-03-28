@@ -6,7 +6,7 @@ from src.gis.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
 from src.gis.proto_py.mutation_pb2 import MutationRequest
 from src.gis.proto_py.mutation_pb2 import MutationRequests
 
-_NODE_SIZE = 100000
+_NODE_SIZE = 1000
 _RADIUS = 100
 
 

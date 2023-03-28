@@ -3,8 +3,8 @@ import logging
 import uuid
 from botocore.exceptions import ClientError
 
-from src.mapdefn.mutation.constants import MESSAGE_GROUP_GENERAL_MUTATION
-from src.mapdefn.proto_py.mutation_pb2 import MutationRequests
+from src.gis.mutation.constants import MESSAGE_GROUP_GENERAL_MUTATION
+from src.gis.proto_py.mutation_pb2 import MutationRequests
 
 
 class MutationProducer:

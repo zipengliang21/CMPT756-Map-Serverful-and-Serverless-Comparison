@@ -1,9 +1,9 @@
 import unittest
 
-from src.initialization.node import Location
-from src.initialization.node import Node
-from src.initialization.node import EuclideanDistance
-from src.initialization.node import GenerateNodes
+from src.rndgraph.node import Location
+from src.rndgraph.node import Node
+from src.rndgraph.node import EuclideanDistance
+from src.rndgraph.node import GenerateNodes
 
 
 class TestNode(unittest.TestCase):

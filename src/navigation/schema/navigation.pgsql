@@ -1,4 +1,4 @@
-CREATE DATABASE navigation WITH TEMPLATE = template0 ENCODING = 'UTF8';
+CREATE DATABASE navigation WITH TEMPLATE = template0 ENCODING = 'UTF8' OWNED BY postgres;
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;

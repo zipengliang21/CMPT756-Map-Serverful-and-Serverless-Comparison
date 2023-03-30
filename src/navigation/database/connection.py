@@ -4,7 +4,9 @@ from src.navigation.database.constant import NAVIGATION_DATABASE_NAME
 from src.navigation.database.constant import NAVIGATION_DATABASE_USER
 
 
-def CreateDatabaseConnection(navigation_db_host: str, navigation_db_password: str):
+def CreateDatabaseConnection(navigation_db_host: str, 
+                             navigation_db_user: str,
+                             navigation_db_password: str):
     """_summary_
 
     Args:
@@ -19,7 +21,7 @@ def CreateDatabaseConnection(navigation_db_host: str, navigation_db_password: st
         format(
             host=navigation_db_host,
             dbname=NAVIGATION_DATABASE_NAME,
-            user=NAVIGATION_DATABASE_USER,
+            user=navigation_db_user,
             password=navigation_db_password
         )
 

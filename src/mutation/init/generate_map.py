@@ -1,10 +1,10 @@
 from src.rndgraph.node import Node
 from src.rndgraph.node import GenerateNodes
 from src.rndgraph.edge import GenerateMstEdges
-from src.gis.proto_py.mutation_pb2 import Node as ProtoNode
-from src.gis.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
-from src.gis.proto_py.mutation_pb2 import MutationRequest
-from src.gis.proto_py.mutation_pb2 import MutationRequests
+from src.mutation.proto_py.mutation_pb2 import Node as ProtoNode
+from src.mutation.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
+from src.mutation.proto_py.mutation_pb2 import MutationRequest
+from src.mutation.proto_py.mutation_pb2 import MutationRequests
 
 _NODE_SIZE = 1000
 _RADIUS = 100

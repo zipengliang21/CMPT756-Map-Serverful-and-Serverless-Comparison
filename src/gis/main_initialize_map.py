@@ -1,7 +1,7 @@
 import argparse
 
+from src.mutation.init.generate_map import GenerateInitialMap
 from src.gis.database.connection import CreateDatabaseConnection
-from src.gis.init.generate_map import GenerateInitialMap
 from src.gis.mutation.writer import MutationWriter
 
 

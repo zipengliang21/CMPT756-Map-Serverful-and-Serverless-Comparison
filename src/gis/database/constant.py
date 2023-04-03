@@ -1,5 +1,4 @@
 GIS_DATABASE_NAME = "gis"
-GIS_DATABASE_USER = "postgres"
 
 GEOLOCATION_TABLE_NAME = "geolocation"
 GEOLOCATION_TABLE_ID = "id"

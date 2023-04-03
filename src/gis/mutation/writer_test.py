@@ -2,10 +2,10 @@ import unittest
 
 from src.gis.mutation.writer import CollectGeolocations
 from src.gis.mutation.writer import CollectTopology
-from src.gis.proto_py.mutation_pb2 import MutationRequest
-from src.gis.proto_py.mutation_pb2 import DeleteUndirectedEdgeRequest
-from src.gis.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
-from src.gis.proto_py.mutation_pb2 import Node
+from src.mutation.proto_py.mutation_pb2 import MutationRequest
+from src.mutation.proto_py.mutation_pb2 import DeleteUndirectedEdgeRequest
+from src.mutation.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
+from src.mutation.proto_py.mutation_pb2 import Node
 
 
 class TestWriter(unittest.TestCase):

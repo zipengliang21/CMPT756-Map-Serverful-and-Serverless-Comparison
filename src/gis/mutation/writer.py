@@ -9,10 +9,10 @@ from src.gis.database.entity import Topology
 from src.gis.database.update import WriteGeolocations
 from src.gis.database.update import WriteTopology
 from src.gis.database.update import DeleteTopology
-from src.gis.proto_py.mutation_pb2 import MutationRequests
-from src.gis.proto_py.mutation_pb2 import MutationRequest
-from src.gis.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
-from src.gis.proto_py.mutation_pb2 import Node
+from src.mutation.proto_py.mutation_pb2 import MutationRequests
+from src.mutation.proto_py.mutation_pb2 import MutationRequest
+from src.mutation.proto_py.mutation_pb2 import WriteUndirectedEdgeRequest
+from src.mutation.proto_py.mutation_pb2 import Node
 
 
 def _ToGeolocation(node: Node) -> Geolocation:

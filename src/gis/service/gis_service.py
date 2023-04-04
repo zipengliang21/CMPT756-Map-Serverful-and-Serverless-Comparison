@@ -5,6 +5,16 @@ from src.gis.service.context import CONTEXT
 app = Flask(__name__)
 
 
+@app.route("/", methods=["GET"])
+def HealthCheck():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+    return "{}"
+
+
 @app.route("/topology", methods=["GET"])
 def GetTopology():
     """_summary_

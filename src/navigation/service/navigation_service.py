@@ -7,6 +7,16 @@ from src.navigation.finder.path import FindPath
 app = Flask(__name__)
 
 
+@app.route("/", methods=["GET"])
+def HealthCheck():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+    return "{}"
+
+
 @app.route("/queryPath", methods=["POST"])
 def QueryPath():
     """_summary_

@@ -2,7 +2,6 @@ from src.navigation.database.entity import EdgeAttributes
 from src.navigation.database.entity import AdjacentEdges
 from src.navigation.database.navigation import AddEdges
 from src.navigation.database.navigation import DeleteEdges
-from src.navigation.database.navigation import findEdges
 from src.mutation.proto_py.mutation_pb2 import MutationRequests
 
 

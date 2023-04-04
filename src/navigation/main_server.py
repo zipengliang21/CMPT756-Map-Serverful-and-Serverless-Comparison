@@ -1,4 +1,5 @@
 import argparse
+from flask_cors import CORS
 
 from src.navigation.service.navigation_service import app
 from src.navigation.service.context import CONTEXT
@@ -32,4 +33,5 @@ if __name__ == "__main__":
     CONTEXT.Init(navigation_db_host=args.navigation_db_host,
                  navigation_db_user=args.navigation_db_user,
                  navigation_db_password=args.navigation_db_password)
+    CORS(app)
     app.run(host="0.0.0.0")

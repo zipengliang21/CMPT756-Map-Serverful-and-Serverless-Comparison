@@ -1,4 +1,5 @@
 import argparse
+from flask_cors import CORS
 
 from src.gis.service.gis_service import app
 from src.gis.service.context import CONTEXT
@@ -32,4 +33,5 @@ if __name__ == "__main__":
     CONTEXT.Init(gis_db_host=args.gis_db_host,
                  gis_db_user=args.gis_db_user,
                  gis_db_password=args.gis_db_password)
+    CORS(app)
     app.run(host="0.0.0.0")

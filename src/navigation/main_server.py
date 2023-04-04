@@ -32,5 +32,4 @@ if __name__ == "__main__":
     CONTEXT.Init(navigation_db_host=args.navigation_db_host,
                  navigation_db_user=args.navigation_db_user,
                  navigation_db_password=args.navigation_db_password)
-    print(CONTEXT)
-    app.run()
+    app.run(host="0.0.0.0")

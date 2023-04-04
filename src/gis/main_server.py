@@ -32,5 +32,4 @@ if __name__ == "__main__":
     CONTEXT.Init(gis_db_host=args.gis_db_host,
                  gis_db_user=args.gis_db_user,
                  gis_db_password=args.gis_db_password)
-    print(CONTEXT)
-    app.run()
+    app.run(host="0.0.0.0")

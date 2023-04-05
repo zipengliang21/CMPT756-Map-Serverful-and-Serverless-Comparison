@@ -1,26 +1,9 @@
-import Graph from "react-graph-vis";
 import axios from 'axios';
-import React, { useState } from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import Github from "./components/Github";
 import Bug from "./components/Bug";
 import {useNode} from "./hooks/useNode";
-
-const options = {
-    layout: {
-        hierarchical: false
-    },
-    edges: {
-        color: "#000000"
-    }
-};
-
-function randomColor() {
-    const red = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    const green = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    const blue = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    return `#${red}${green}${blue}`;
-}
 
 const AppWrapper = styled.div`
   background: #FBFAF6;
@@ -30,9 +13,8 @@ const AppWrapper = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  border: 3px solid red;
+  border: 3px solid #89CFF0;
   width: 500px;
-  //height: 500px;
   margin: 0 auto;
   text-align: center;
   div{
@@ -40,6 +22,15 @@ const InputWrapper = styled.div`
     input{
       margin-left: 10px;
     }
+  }
+`;
+const TableWrapper = styled.div`
+  display: flex;
+  width: 500px;
+  margin: 30px auto 0 auto;
+  text-align: center;
+  table{
+    padding-right: 100px;
   }
 `;
 
@@ -118,38 +109,12 @@ const Footer = styled.div`
 `;
 
 function App() {
-    const {nodes} = useNode();
-    const [sourceId, setSourceId] = useState('');
-    const [destinationId, setDestinationId] = useState('');
-    const [state, setState] = useState({
-        counter: 5,
-        graph: {
-            nodes: [
-                { id: 1, label: "Node 1", color: "#e04141" },
-                { id: 2, label: "Node 2", color: "#e09c41" },
-                { id: 3, label: "Node 3", color: "#e0df41" },
-                { id: 4, label: "Node 4", color: "#7be041" },
-                { id: 5, label: "Node 5", color: "#41e0c9" }
-            ],
-            edges: [
-                { from: 1, to: 2 },
-                { from: 1, to: 3 },
-                { from: 2, to: 4 },
-                { from: 2, to: 5 }
-            ]
-        },
-        events: {
-            select: ({ nodes, edges }) => {
-                console.log("Selected nodes:");
-                console.log(nodes);
-                console.log("Selected edges:");
-                console.log(edges);
-                alert("Selected node: " + nodes);
-            },
-            doubleClick: ({ pointer: { canvas } }) => {
-            }
-        }
-    })
+    const {nodes, links} = useNode();
+
+    const [sourceId, setSourceId] = useState(null);
+    const [destinationId, setDestinationId] = useState(null);
+    const [path, setPath] = useState("")
+
     function handleSourceIdChange(event) {
         setSourceId(event.target.value);
     }
@@ -159,13 +124,19 @@ function App() {
     }
 
     function handleConfirmClick() {
-        axios.get(`/api/queryPath?source=${sourceId}&destination=${destinationId}`)
+        const data = {
+            start_node_id: parseInt(sourceId),
+            dst_node_id: parseInt(destinationId),
+        };
+        axios.post(`http://navigation-2144378025.ca-central-1.elb.amazonaws.com/queryPath`, data)
             .then(response => {
-                // setPath(response.data.path);
+                console.log(response)
+                const path = response.data.join(" -> ");
+                setPath(path);
             })
             .catch(error => console.log(error));
     }
-    const { graph, events } = state;
+
   return (
       <AppWrapper>
           <HeaderWrapper>
@@ -189,9 +160,50 @@ function App() {
                   <input id="destination-id" type="text" value={destinationId} onChange={handleDestinationIdChange} />
               </div>
               <button onClick={handleConfirmClick}>Confirm</button>
-              <div>Result</div>
+              <div style={{color: "red"}}>Result: {path}</div>
           </InputWrapper>
-          {/*<Graph graph={graph} options={options} events={events} style={{ height: "85vh" }} />*/}
+          <TableWrapper>
+              <table>
+                  <thead>
+                  <tr>
+                      <th>id</th>
+                      <th>x</th>
+                      <th>y</th>
+                      <th>importance</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {nodes.map(node => (
+                      <tr key={node.id}>
+                          <td>{node.id}</td>
+                          <td>{node.x.toFixed(3)}</td>
+                          <td>{node.y.toFixed(3)}</td>
+                          <td>{node.importance.toFixed(2)}</td>
+                      </tr>
+                  ))}
+                  </tbody>
+              </table>
+              <table>
+                  <thead>
+                  <tr>
+                      <th>loc1_id</th>
+                      <th>loc2_id</th>
+                      <th>distance</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {links.map(link => (
+                      <tr key={`${link.loc1_id} + "_" + ${link.loc2_id}`}>
+                          <td>{link.loc1_id}</td>
+                          <td>{link.loc2_id}</td>
+                          <td>{link.distance.toFixed(3)}</td>
+                      </tr>
+                  ))}
+                  </tbody>
+              </table>
+          </TableWrapper>
+
+
           <Footer>
               <div>
                   <Github/> Group 5 Demo <Bug/>

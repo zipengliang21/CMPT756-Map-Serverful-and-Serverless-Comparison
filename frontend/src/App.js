@@ -1,30 +1,37 @@
-import Graph from "react-graph-vis";
-import React, { useState } from "react";
+import axios from 'axios';
+import React, {useState} from "react";
 import styled from "styled-components";
 import Github from "./components/Github";
 import Bug from "./components/Bug";
-
-const options = {
-    layout: {
-        hierarchical: false
-    },
-    edges: {
-        color: "#000000"
-    }
-};
-
-function randomColor() {
-    const red = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    const green = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    const blue = Math.floor(Math.random() * 256).toString(16).padStart(2, '0');
-    return `#${red}${green}${blue}`;
-}
+import {useNode} from "./hooks/useNode";
 
 const AppWrapper = styled.div`
   background: #FBFAF6;
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+`;
+
+const InputWrapper = styled.div`
+  border: 3px solid #89CFF0;
+  width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  div{
+    padding: 10px;
+    input{
+      margin-left: 10px;
+    }
+  }
+`;
+const TableWrapper = styled.div`
+  display: flex;
+  width: 500px;
+  margin: 30px auto 0 auto;
+  text-align: center;
+  table{
+    padding-right: 100px;
+  }
 `;
 
 const HeaderWrapper = styled.header`
@@ -75,7 +82,7 @@ const HeaderWrapper = styled.header`
             justify-content: center;
         };
         p{
-          margin: 0px 35px;
+          margin: 0 35px;
           font-size: 1.4em;
           font-family: Poppins, sans-serif;
           line-height: 1.8;
@@ -102,36 +109,34 @@ const Footer = styled.div`
 `;
 
 function App() {
-    const [state, setState] = useState({
-        counter: 5,
-        graph: {
-            nodes: [
-                { id: 1, label: "Node 1", color: "#e04141" },
-                { id: 2, label: "Node 2", color: "#e09c41" },
-                { id: 3, label: "Node 3", color: "#e0df41" },
-                { id: 4, label: "Node 4", color: "#7be041" },
-                { id: 5, label: "Node 5", color: "#41e0c9" }
-            ],
-            edges: [
-                { from: 1, to: 2 },
-                { from: 1, to: 3 },
-                { from: 2, to: 4 },
-                { from: 2, to: 5 }
-            ]
-        },
-        events: {
-            select: ({ nodes, edges }) => {
-                console.log("Selected nodes:");
-                console.log(nodes);
-                console.log("Selected edges:");
-                console.log(edges);
-                alert("Selected node: " + nodes);
-            },
-            doubleClick: ({ pointer: { canvas } }) => {
-            }
-        }
-    })
-    const { graph, events } = state;
+    const {nodes, links} = useNode();
+
+    const [sourceId, setSourceId] = useState(null);
+    const [destinationId, setDestinationId] = useState(null);
+    const [path, setPath] = useState("")
+
+    function handleSourceIdChange(event) {
+        setSourceId(event.target.value);
+    }
+
+    function handleDestinationIdChange(event) {
+        setDestinationId(event.target.value);
+    }
+
+    function handleConfirmClick() {
+        const data = {
+            start_node_id: parseInt(sourceId),
+            dst_node_id: parseInt(destinationId),
+        };
+        axios.post(`http://navigation-2144378025.ca-central-1.elb.amazonaws.com/queryPath`, data)
+            .then(response => {
+                console.log(response)
+                const path = response.data.join(" -> ");
+                setPath(path);
+            })
+            .catch(error => console.log(error));
+    }
+
   return (
       <AppWrapper>
           <HeaderWrapper>
@@ -145,7 +150,60 @@ function App() {
                   <div></div>
               </div>
           </HeaderWrapper>
-          <Graph graph={graph} options={options} events={events} style={{ height: "85vh" }} />
+          <InputWrapper>
+              <div>
+                  <label htmlFor="source-id">Source Node ID:</label>
+                  <input id="source-id" type="text" value={sourceId} onChange={handleSourceIdChange} />
+              </div>
+              <div>
+                  <label htmlFor="destination-id">Destination Node ID:</label>
+                  <input id="destination-id" type="text" value={destinationId} onChange={handleDestinationIdChange} />
+              </div>
+              <button onClick={handleConfirmClick}>Confirm</button>
+              <div style={{color: "red"}}>Result: {path}</div>
+          </InputWrapper>
+          <TableWrapper>
+              <table>
+                  <thead>
+                  <tr>
+                      <th>id</th>
+                      <th>x</th>
+                      <th>y</th>
+                      <th>importance</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {nodes.map(node => (
+                      <tr key={node.id}>
+                          <td>{node.id}</td>
+                          <td>{node.x.toFixed(3)}</td>
+                          <td>{node.y.toFixed(3)}</td>
+                          <td>{node.importance.toFixed(2)}</td>
+                      </tr>
+                  ))}
+                  </tbody>
+              </table>
+              <table>
+                  <thead>
+                  <tr>
+                      <th>loc1_id</th>
+                      <th>loc2_id</th>
+                      <th>distance</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {links.map(link => (
+                      <tr key={`${link.loc1_id} + "_" + ${link.loc2_id}`}>
+                          <td>{link.loc1_id}</td>
+                          <td>{link.loc2_id}</td>
+                          <td>{link.distance.toFixed(3)}</td>
+                      </tr>
+                  ))}
+                  </tbody>
+              </table>
+          </TableWrapper>
+
+
           <Footer>
               <div>
                   <Github/> Group 5 Demo <Bug/>

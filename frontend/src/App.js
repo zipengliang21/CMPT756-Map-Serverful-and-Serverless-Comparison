@@ -1,8 +1,10 @@
 import Graph from "react-graph-vis";
+import axios from 'axios';
 import React, { useState } from "react";
 import styled from "styled-components";
 import Github from "./components/Github";
 import Bug from "./components/Bug";
+import {useNode} from "./hooks/useNode";
 
 const options = {
     layout: {
@@ -25,6 +27,20 @@ const AppWrapper = styled.div`
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+`;
+
+const InputWrapper = styled.div`
+  border: 3px solid red;
+  width: 500px;
+  //height: 500px;
+  margin: 0 auto;
+  text-align: center;
+  div{
+    padding: 10px;
+    input{
+      margin-left: 10px;
+    }
+  }
 `;
 
 const HeaderWrapper = styled.header`
@@ -75,7 +91,7 @@ const HeaderWrapper = styled.header`
             justify-content: center;
         };
         p{
-          margin: 0px 35px;
+          margin: 0 35px;
           font-size: 1.4em;
           font-family: Poppins, sans-serif;
           line-height: 1.8;
@@ -102,6 +118,9 @@ const Footer = styled.div`
 `;
 
 function App() {
+    const {nodes} = useNode();
+    const [sourceId, setSourceId] = useState('');
+    const [destinationId, setDestinationId] = useState('');
     const [state, setState] = useState({
         counter: 5,
         graph: {
@@ -131,6 +150,21 @@ function App() {
             }
         }
     })
+    function handleSourceIdChange(event) {
+        setSourceId(event.target.value);
+    }
+
+    function handleDestinationIdChange(event) {
+        setDestinationId(event.target.value);
+    }
+
+    function handleConfirmClick() {
+        axios.get(`/api/queryPath?source=${sourceId}&destination=${destinationId}`)
+            .then(response => {
+                // setPath(response.data.path);
+            })
+            .catch(error => console.log(error));
+    }
     const { graph, events } = state;
   return (
       <AppWrapper>
@@ -145,7 +179,19 @@ function App() {
                   <div></div>
               </div>
           </HeaderWrapper>
-          <Graph graph={graph} options={options} events={events} style={{ height: "85vh" }} />
+          <InputWrapper>
+              <div>
+                  <label htmlFor="source-id">Source Node ID:</label>
+                  <input id="source-id" type="text" value={sourceId} onChange={handleSourceIdChange} />
+              </div>
+              <div>
+                  <label htmlFor="destination-id">Destination Node ID:</label>
+                  <input id="destination-id" type="text" value={destinationId} onChange={handleDestinationIdChange} />
+              </div>
+              <button onClick={handleConfirmClick}>Confirm</button>
+              <div>Result</div>
+          </InputWrapper>
+          {/*<Graph graph={graph} options={options} events={events} style={{ height: "85vh" }} />*/}
           <Footer>
               <div>
                   <Github/> Group 5 Demo <Bug/>

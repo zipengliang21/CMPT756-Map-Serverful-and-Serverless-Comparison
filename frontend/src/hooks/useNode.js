@@ -17,12 +17,12 @@ const useNode = () => {
     }, []);
 
     const getNodes = async () => {
-        const response = await axios.get(`http://gis-1235303617.ca-central-1.elb.amazonaws.com/topology`);
+        const response = await axios.get(`http://gis.e8yes.org/topology`);
         return response.data.geolocations;
     }
 
     const getLinks = async () => {
-        const response = await axios.get(`http://gis-1235303617.ca-central-1.elb.amazonaws.com/topology`);
+        const response = await axios.get(`http://gis.e8yes.org/topology`);
         // console.log(response)
         return response.data.topology;
     }
